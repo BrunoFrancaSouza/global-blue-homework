@@ -9,7 +9,6 @@ using GlobalBlueHomework.Application.Constants;
 namespace GlobalBlueHomework.Api.Controllers.V1
 {
     /// <summary>
-    /// Controller to manage Purchase related operations.
     /// Controller to manage all Value Added Tax (VAT) operations.
     /// </summary>
     [ApiController, ApiVersion("1.0")]
