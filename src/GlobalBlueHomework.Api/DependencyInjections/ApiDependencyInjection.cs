@@ -2,6 +2,9 @@
 
 namespace GlobalBlueHomework.Api.DependencyInjections;
 
+/// <summary>
+/// Adds all needed dependency injections by API layer.
+/// </summary>
 public static class ApiDependencyInjection
 {
     /// <summary>

@@ -28,12 +28,12 @@ namespace GlobalBlueHomework.Api.Controllers.V1
         }
 
         /// <summary>
-        /// Calculates Net, Gross and Value Added Tax (VAT) amounts for purchases in Austria.
+        /// Calculates net, gross and Value Added Tax (VAT) amounts for purchases in Austria.
         /// </summary>
         /// <remarks>
         /// Receives one of the net, gross or VAT amounts and additionally a valid Austrian VAT rate (10%, 13%, 20%).
         /// 
-        /// The other two missing amounts (net/gross/VAT) are calculated and returned.
+        /// Then calculates and returns the other two missing amounts (net/gross/VAT).
         /// </remarks>
         /// <param name="request"></param>
         [HttpPost()]

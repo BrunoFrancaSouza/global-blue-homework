@@ -3,7 +3,7 @@
 namespace GlobalBlueHomework.Application.Services.Vat;
 
 // TODO: Refactor this in order to get the country valid VAT rates from an external source.
-// Hardcoded this way just for exercise's purpose.
+// Hardcoded just for exercise's purpose.
 public class GetCountryValidVatRatesService : IGetCountryValidVatRatesService
 {
     //private readonly IOptions<AppOptions> _appOptions;
