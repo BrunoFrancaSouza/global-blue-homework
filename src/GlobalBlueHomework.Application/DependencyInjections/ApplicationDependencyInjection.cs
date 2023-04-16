@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using GlobalBlueHomework.Application.Services.Purchases.Calculator;
 using GlobalBlueHomework.Application.Services.Vat;
+using GlobalBlueHomework.Application.Services.Vat.CheckIsValidRate;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GlobalBlueHomework.Application.DependencyInjections;
@@ -27,6 +28,7 @@ public static class ApplicationDependencyInjection
     {
         services.AddTransient<ICalculatePurchaseAmountsService, CalculatePurchaseAmountsService>();
         services.AddTransient<IGetCountryValidVatRatesService, GetCountryValidVatRatesService>();
+        services.AddTransient<ICheckVatRateIsValidService, CheckVatRateIsValidService>();
 
         return services;
     }

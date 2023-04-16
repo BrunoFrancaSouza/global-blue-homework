@@ -29,8 +29,6 @@ public class CalculatePurchaseAmountsService : ICalculatePurchaseAmountsService
         if (!validationResult.IsValid)
             return new ValidationFailed(validationResult.Errors);
 
-        //var austrianPurchase = new AustrianPurchase();
-        var validVatRates = GetCountryValidVatRates(input.CountryCode);
         var createPurchaseResult = Purchase.Create(input.NetAmount, input.GrossAmount, input.VatAmount, input.VatRate.Value);
 
         if (createPurchaseResult.IsFailed)
@@ -39,13 +37,6 @@ public class CalculatePurchaseAmountsService : ICalculatePurchaseAmountsService
         var purchase = createPurchaseResult.Value;
 
         var response = _mapper.Map<CalculatePurchaseAmountsServiceOutput>(purchase);
-        return response;
-    }
-
-    private float[] GetCountryValidVatRates(string countryCode)
-    {
-        var serviceInput = new GetCountryValidVatRatesServiceInput(countryCode);
-        var response = _getCountryValidVatRatesService.Execute(serviceInput);
         return response;
     }
 }

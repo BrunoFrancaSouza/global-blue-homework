@@ -1,17 +1,12 @@
 ﻿using FluentValidation;
-using GlobalBlueHomework.Application.Options;
-using Microsoft.Extensions.Options;
+using GlobalBlueHomework.Application.Services.Vat.CheckIsValidRate;
 
 namespace GlobalBlueHomework.Application.Services.Purchases.Calculator;
 
 public class CalculatePurchaseAmountsServiceValidator : AbstractValidator<CalculatePurchaseAmountsServiceInput>
 {
-    private readonly IOptions<AppOptions> _appOptions;
-
-    public CalculatePurchaseAmountsServiceValidator(IOptions<AppOptions> appOptions)
+    public CalculatePurchaseAmountsServiceValidator(ICheckVatRateIsValidService checkVatRateIsValidService)
     {
-        _appOptions = appOptions ?? throw new ArgumentNullException(nameof(appOptions));
-
         RuleFor(x => x)
            .Must(HaveAtLeastOneInput)
            .WithMessage("Please provide at least one of the following: gross, net or VAT amount.");
@@ -32,7 +27,11 @@ public class CalculatePurchaseAmountsServiceValidator : AbstractValidator<Calcul
         RuleFor(x => x.VatRate)
             .NotNull()
             .GreaterThanOrEqualTo(0)
-            .Must(BeValidAustrianVatRate).WithMessage("'{PropertyValue}' is not a valid {PropertyName} for Austria.");
+            .Must((model, vatRate, context) =>
+            {
+                context.MessageFormatter.AppendArgument("CountryCode", model.CountryCode);
+                return checkVatRateIsValidService.Execute(model.CountryCode, vatRate);
+            }).WithMessage("'{PropertyValue}' is not a valid VAT rate for the given country code '{CountryCode}'.");
     }
 
     private bool HaveAtLeastOneInput(CalculatePurchaseAmountsServiceInput input)
@@ -44,12 +43,6 @@ public class CalculatePurchaseAmountsServiceValidator : AbstractValidator<Calcul
     private bool NotHaveMoreThanOneAmountInput(CalculatePurchaseAmountsServiceInput input)
     {
         var response = input.GrossAmount.HasValue ^ input.NetAmount.HasValue ^ input.VatAmount.HasValue;
-        return response;
-    }
-
-    private bool BeValidAustrianVatRate(float? vatRate)
-    {
-        var response = Array.IndexOf(_appOptions.Value.AustrianVatRates, vatRate) > -1;
         return response;
     }
 }
