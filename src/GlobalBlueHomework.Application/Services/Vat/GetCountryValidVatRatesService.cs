@@ -6,7 +6,6 @@ namespace GlobalBlueHomework.Application.Services.Vat;
 // Hardcoded just for exercise's purpose.
 public class GetCountryValidVatRatesService : IGetCountryValidVatRatesService
 {
-    //private readonly IOptions<AppOptions> _appOptions;
     private readonly IConfiguration _configuration;
 
     public GetCountryValidVatRatesService(IConfiguration configuration)

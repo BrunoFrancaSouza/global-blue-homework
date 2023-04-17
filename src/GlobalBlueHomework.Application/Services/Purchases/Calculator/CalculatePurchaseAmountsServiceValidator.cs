@@ -8,7 +8,7 @@ public class CalculatePurchaseAmountsServiceValidator : AbstractValidator<Calcul
     public CalculatePurchaseAmountsServiceValidator(ICheckVatRateIsValidService checkVatRateIsValidService)
     {
         RuleFor(x => x)
-           .Must(HaveAtLeastOneInput)
+           .Must(HaveAtLeastOneAmountInput)
            .WithMessage("Please provide at least one of the following: gross, net or VAT amount.");
 
         RuleFor(x => x)
@@ -34,15 +34,29 @@ public class CalculatePurchaseAmountsServiceValidator : AbstractValidator<Calcul
             }).WithMessage("'{PropertyValue}' is not a valid VAT rate for the given country code '{CountryCode}'.");
     }
 
-    private bool HaveAtLeastOneInput(CalculatePurchaseAmountsServiceInput input)
+    private bool HaveAtLeastOneAmountInput(CalculatePurchaseAmountsServiceInput input)
     {
-        var response = input.GrossAmount.HasValue || input.NetAmount.HasValue || input.VatAmount.HasValue;
+        var response = input.NetAmount.HasValue || input.GrossAmount.HasValue || input.VatAmount.HasValue;
         return response;
     }
 
     private bool NotHaveMoreThanOneAmountInput(CalculatePurchaseAmountsServiceInput input)
     {
-        var response = input.GrossAmount.HasValue ^ input.NetAmount.HasValue ^ input.VatAmount.HasValue;
+        if (!input.NetAmount.HasValue && !input.GrossAmount.HasValue && !input.VatAmount.HasValue)
+            return true;
+
+        var count = 0;
+
+        if (input.NetAmount.HasValue)
+            count += 1;
+
+        if (input.GrossAmount.HasValue)
+            count += 1;
+
+        if (input.VatAmount.HasValue)
+            count += 1;
+
+        var response = count <= 1;
         return response;
     }
 }
