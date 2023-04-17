@@ -5,7 +5,6 @@ As an API user, I would like to calculate Net, Gross, VAT amounts for purchases 
 
 ACCEPTANCE CRITERIA
 
-<br />
 • If the API receives one of the net, gross or VAT amounts and additionally a valid Austrian VAT rate (10%, 13%, 20%), the other two missing amounts (net/gross/VAT) are calculated by the system and returned to the client in a meaningful structure
 
 <br />
